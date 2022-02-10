@@ -8,11 +8,11 @@ module.exports = app => {
     // Retrieve all blog
     router.get("/", blog.findAll);
     // Retrieve a single blog with id
-    router.get("/:id", blog.findOne);
+    router.get("/blog/:id", blog.findOne);
     // Update a blog with id
     // router.put("/:id", blogModel.update);
     // Delete a blog with id
-    router.delete("/:id", blog.delete);
+    router.delete("/blog/:id", blog.delete);
     // Create a new blog
     router.delete("/", blog.deleteAll);
     app.use('/api/blog', router);

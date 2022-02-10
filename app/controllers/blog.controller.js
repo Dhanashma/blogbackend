@@ -1,5 +1,5 @@
 const db = require("../models");
-const blog = db.blog;
+const Blog = db.blogs;
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
     // Validate request
@@ -8,7 +8,7 @@ exports.create = (req, res) => {
       return;
     }
     // Create a Tutorial
-    const blog = new blog({
+    const blog = new Blog({
       name: req.body.name,
       title: req.body.title,
       description: req.body.description
@@ -28,24 +28,24 @@ exports.create = (req, res) => {
   };
 // Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
-    const title = req.query.title;
-    var condition = title ? { title: { $regex: new RegExp(title), $options: "i" } } : {};
-    blog.find(condition)
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving blog."
-        });
+  const title = req.query.title;
+  var condition = title ? { title: { $regex: new RegExp(title), $options: "i" } } : {};
+  Blog.find(condition)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
       });
-  };
+    });
+};
   
 // Find a single Tutorial with an id
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    blog.findById(id)
+    Blog.findById(id)
       .then(data => {
         if (!data)
           res.status(404).send({ message: "Not found blog with id " + id });
@@ -65,7 +65,7 @@ exports.update = (req, res) => {
       });
     }
     const id = req.params.id;
-    blog.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    Blog.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
       .then(data => {
         if (!data) {
           res.status(404).send({
@@ -82,7 +82,7 @@ exports.update = (req, res) => {
 // Delete a Tutorial with the specified id in the request
 exports.delete = (req, res) => {
     const id = req.params.id;
-    blog.findByIdAndRemove(id)
+    Blog.findByIdAndRemove(id)
       .then(data => {
         if (!data) {
           res.status(404).send({
@@ -102,7 +102,7 @@ exports.delete = (req, res) => {
   };
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
-    blog.deleteMany({})
+    Blog.deleteMany({})
       .then(data => {
         res.send({
           message: `${data.deletedCount} blog were deleted successfully!`
